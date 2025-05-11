@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Finder</title>
+    <link rel="stylesheet" href='{% static "css/style.css" %}'>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</head>
+<body>
+
+
+
+    <header>
+        <div class="logo">
+            <h1>Worker Finder</h1>
+        </div>
+        <nav class="menubar">
+            <ul>
+                <li><a href='{% url "afterlogin"%}'> Home</a></li>
+                <li><a href='{% url "servicesafter"%}'>Services</a></li>
+                <li><a href='{% url "worker_profiles:user_notifications" %}'>Notifications</a></li>
+                <li class="dropdown">
+                    <a href="#">Account&#9662;</a>
+                    <ul class="dropdown-menu">
+                        <li><a href='{% url "worker_profiles:user_profile"%}'>My Profile</a></li>
+                        <li><a href='{% url "worker_profiles:user_booking"%}'>Bookings</a></li>
+                        <li><a href='{% url "helpcenter"%}'>Help Center</a></li>
+                        <li><a href='{% url "aboutafter"%}'>About</a></li>
+                        <li><a href='{% url "user_acc:user_logout"%}'>Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+<section class="slider-container">
+    <div class="slider">
+        <div class="slide active">
+            <img src='{% static "images/slideimg1.jpg" alt="Image 1" %}'>
+            <div class="caption">Quality Services <br> at Your <br> Fingertips</div>
+        </div>
+        <div class="slide">
+            <img src='{% static "images/slideimg2.jpg" alt="Image 2"%}'>
+            <div class="caption">Find Skilled <br>Workers Nearby</div>
+        </div>
+        <div class="slide">
+            <img src='{% static "images/slideimg3.jpg" alt="Image 3"%}'>
+            <div class="caption">Effortless Hiring,<br> Trusted Professionals</div>
+        </div>
+    </div>
+
+    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="next" onclick="changeSlide(1)">&#10095;</button>
+</section>
+
+     <section class="highlight-text">
+    <h2>WE HAVE MORE THAN <br><span>10000 ACTIVE WORKERS</span></h2>
+</section>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2 style="color: black;">Find the Best Workers Near You</h2>
+            <p style="color: black;">Plumbers, Electricians, Carpenters, Mechanics, and more</p>
+            <div class="search-container">
+                <input type="text" id="location" placeholder="Search a worker" required>
+                <button onclick="searchWorkers()">Search</button>
+                <ul id="recommendations-list" class="recommendations"></ul>
+            </div>
+    </section>
+
+
+    <section class="categories">
+        <div class="service-list">
+        </div>
+
+    <section class="service-list">
+
+        <div class="business-card" onclick="openModal('card1')">
+            <img src='{% static "images/mechanic" alt="mechanic"%}'>
+            <h3>Mechanic</h3>
+            <p>Expert vehicle repair</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Mechanic' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card2')">
+            <img src='{% static "images/electrician" alt="electrician"%}'>
+            <h3>Electrician</h3>
+            <p>Skilled and reliable service </p>
+            <a href="{% url 'worker_list:workers_by_category' 'Electrician' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card3')">
+            <img src='{% static "images\carpenter" alt="Carpenter"%}'>
+            <h3>Carpenter</h3>
+            <p>Custom woodwork solutions</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Carpenter' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card4')">
+            <img src='{% static "images\plumber" alt="Plumber"%}'>
+            <h3>Plumber</h3>
+            <p>Fast and reliable plumbing</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Plumber' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card2')">
+            <img src='{% static "images\movers" alt="movers"%}'>
+            <h3>House Movers</h3>
+            <p>Expert vehicle repair</p>
+            <a href="{% url 'worker_list:workers_by_category' 'House Movers' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card3')">
+            <img src='{% static "images\Construction" alt="Construction"%}'>
+            <h3>Construction Worker</h3>
+            <p>Constructing the foundation for tomorrow</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Construction Worker' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card4')">
+            <img src='{% static "images\fabricator" alt="fabricator"%}'>
+            <h3>Fabricator</h3>
+            <p>Fast and reliable plumbing</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Fabricator' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card2')">
+            <img src='{% static "images\welder" alt="welder"%}'>
+            <h3>Welder</h3>
+            <p>Expert vehicle repair</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Welder' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card3')">
+            <img src='{% static "images\gardener" alt="gardener"%}'>
+            <h3>Landscaper / Gardener</h3>
+            <p>Custom woodwork solutions</p>
+            <button>View Details</button>
+        </div>
+        <div class="business-card" onclick="openModal('card4')">
+            <img src='{% static "images\cleaner" alt="cleaner"%}'>
+            <h3>House Cleaner</h3>
+            <p>Fast and reliable plumbing</p>
+            <a href="{% url 'worker_list:workers_by_category' 'House Cleaner' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card3')">
+            <img src='{% static "images\Coconut Picker" alt="Coconut Picker"%}'>
+            <h3>Coconut Picker</h3>
+            <p>Custom woodwork solutions</p>
+            <a href="{% url 'worker_list:workers_by_category' 'Coconut Pickers' %}"><button>View Details</button></a>
+        </div>
+        <div class="business-card" onclick="openModal('card4')">
+            <img src='{% static "images\more" alt="more"%}'>
+            <h3>More</h3>
+            <p>Fast and reliable plumbing</p>
+            <a href='{% url "servicesafter" %}'><button> Details</button></a>
+        </div>
+
+    </section>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <div class="social-links">
+                <a href="#" target="_blank">Facebook</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Instagram</a>
+            </div>
+        </div>
+        <p>&copy; 2025 Worker Finder. All rights reserved.</p>
+    </footer>
+
+
+
+
+
+</body>
+</html>

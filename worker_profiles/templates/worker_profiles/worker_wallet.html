@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Worker Wallet</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f7fc;
+      margin: 0;
+      padding: 0;
+    }
+    .wallet-container {
+      max-width: 1100px;
+      margin: 50px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .wallet-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .wallet-header h1 {
+      background: linear-gradient(to right, #007bff, #00d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 40px;
+    }
+    .wallet-balance {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .wallet-balance div {
+      background: #f9fbfd;
+      padding: 20px 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+    .wallet-balance div h2 {
+      margin: 0;
+      font-size: 26px;
+      color: #333;
+    }
+    .wallet-balance div p {
+      margin: 5px 0 0;
+      font-size: 18px;
+      color: #555;
+    }
+    .withdraw-button {
+      display: block;
+      margin: 0 auto 40px;
+      padding: 12px 30px;
+      background: linear-gradient(to right, #007bff, #00d4ff);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .withdraw-button:hover {
+      background: linear-gradient(to right, #0056b3, #00aaff);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    .earning {
+      color: green;
+      font-weight: bold;
+    }
+    .withdrawal {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wallet-container">
+  <div class="wallet-header">
+    <h1>My Wallet</h1>
+  </div>
+
+  <div class="wallet-balance">
+    <div>
+      <h2>{{ wallet.total_earnings|floatformat:2 }} ₹</h2>
+      <p>Total Earned</p>
+    </div>
+    <div>
+      <h2>{{ wallet.available_balance|floatformat:2 }} ₹</h2>
+      <p>Available Balance</p>
+    </div>
+  </div>
+
+  <a href='{% url "worker_profiles:withdraw_request" %}'>
+    <button class="withdraw-button">Request Withdraw</button>
+  </a>
+
+  <h2 style="margin-top: 40px;">Payment History</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Transaction Type</th>
+        <th>Amount</th>
+        <th>Description</th>
+      </tr>
+<tbody>
+  {% for txn in transactions %}
+  <tr>
+    <td>
+      {{ txn.timestamp|date:"M d, Y" }}
+    </td>
+    <td>
+      {% if txn.transaction_type == 'earning' %}
+        <span class="earning">+{{ txn.amount|floatformat:2 }} ₹</span>
+      {% else %}
+        <span class="withdrawal">-{{ txn.amount|floatformat:2 }} ₹</span>
+      {% endif %}
+    </td>
+    <td>{{ txn.amount|floatformat:2 }} ₹</td>
+    <td>{{ txn.description }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="4">No transaction history found.</td>
+  </tr>
+  {% endfor %}
+</tbody>
+  </table>
+</div>
+{% if messages %}
+<script>
+  {% for message in messages %}
+    alert("{{ message|escapejs }}");
+  {% endfor %}
+</script>
+{% endif %}
+
+</body>
+</html>

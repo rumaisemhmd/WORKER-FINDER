@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Worker Notifications</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e2f;
+      padding: 20px;
+    }
+    h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .notification-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin: 20px auto;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: 0.2s ease;
+    }
+    .notification-card:hover {
+      transform: translateY(-2px);
+    }
+    .notification-card p {
+      margin: 8px 0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .notification-card strong {
+      display: inline-block;
+      width: 140px;
+      color: #333;
+    }
+    .response-message, .select-date {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .accept-btn, .reject-btn {
+      flex: 1;
+      padding: 12px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .accept-btn { background: #4CAF50; color: white; }
+    .reject-btn { background: #F44336; color: white; }
+    .accept-btn:hover { background: #45a049; }
+    .reject-btn:hover { background: #e53935; }
+    .no-notifications {
+      text-align: center;
+      color: #bbb;
+      font-size: 18px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Worker Notifications</h2>
+
+{% csrf_token %}
+
+
+{% if worker_bookings %}
+  {% for booking in worker_bookings|dictsortreversed:"id" %}
+    <form method="post" class="notification-form" data-type="booking" data-id="{{ booking.id }}">
+      {% csrf_token %}
+      <div class="notification-card">
+        <p><strong>Type:</strong> Booking</p>
+        <p><strong>User:</strong> {{ booking.user.first_name }} {{ booking.user.last_name }}</p>
+        <p><strong>Booked Dates:</strong> {{ booking.start_date }} to {{ booking.end_date }}</p>
+        <p><strong>Work Site:</strong> {{ booking.work_site }}</p>
+        <p><strong>Message:</strong> "{{ booking.message }}"</p>
+
+        <textarea class="response-message"
+                  placeholder="Enter your response..." name="response_message"
+                  required></textarea>
+
+        <div class="button-group">
+          <button type="submit" class="accept-btn" data-action="accept" data-url="/worker-profiles/update_booking/{{ booking.id }}/">Accept</button>
+          <button type="submit" class="reject-btn" data-action="reject" data-url="/worker-profiles/update_booking/{{ booking.id }}/">Reject</button>
+        </div>
+      </div>
+    </form>
+  {% endfor %}
+{% else %}
+  <div class="no-notifications">No booking notifications found.</div>
+{% endif %}
+
+
+{% if site_visit_requests %}
+  {% for visit in site_visit_requests|dictsortreversed:"id" %}
+    <form method="post" class="notification-form" data-type="site_visit" data-id="{{ visit.id }}">
+      {% csrf_token %}
+      <div class="notification-card">
+        <p><strong>Type:</strong> Site Visit Request</p>
+        <p><strong>User:</strong> {{ visit.user.first_name }} {{ visit.user.last_name }}</p>
+        <p><strong>Preferred Dates:</strong> {{ visit.preferred_date1 }}, {{ visit.preferred_date2 }}, {{ visit.preferred_date3 }}</p>
+        <p><strong>Location:</strong> {{ visit.location }}</p>
+        <p><strong>Message:</strong> "{{ visit.bio }}"</p>
+
+        <select name="confirm_date" class="select-date" style="margin-top:10px; width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; display:none;">
+  <option value="">Select one date</option>
+  {% if visit.preferred_date1 %}
+    <option value="{{ visit.preferred_date1|date:'Y-m-d' }}">{{ visit.preferred_date1|date:'F j, Y' }}</option>
+  {% endif %}
+  {% if visit.preferred_date2 %}
+    <option value="{{ visit.preferred_date2|date:'Y-m-d' }}">{{ visit.preferred_date2|date:'F j, Y' }}</option>
+  {% endif %}
+  {% if visit.preferred_date3 %}
+    <option value="{{ visit.preferred_date3|date:'Y-m-d' }}">{{ visit.preferred_date3|date:'F j, Y' }}</option>
+  {% endif %}
+</select>
+
+        <textarea class="response-message"
+                  placeholder="Enter your response..." name="response_message"
+                  required></textarea>
+
+        <div class="button-group">
+          <button type="submit" class="accept-btn" data-action="accept" data-url="/worker-profiles/update_site_visit/{{ visit.id }}/">Accept</button>
+          <button type="submit" class="reject-btn" data-action="reject" data-url="/worker-profiles/update_site_visit/{{ visit.id }}/">Reject</button>
+        </div>
+      </div>
+    </form>
+  {% endfor %}
+{% else %}
+  <div class="no-notifications">No site visit requests found.</div>
+{% endif %}
+
+<script>
+document.querySelectorAll(".notification-form").forEach((form) => {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const submitter = e.submitter;
+    const action = submitter.dataset.action;
+    const url = submitter.dataset.url;
+
+    if (!action || !url) {
+      alert("Please click Accept or Reject.");
+      return;
+    }
+
+    const textarea = this.querySelector("textarea");
+    const message = textarea.value.trim();
+
+    if (!message) {
+      textarea.reportValidity();
+      return;
+    }
+
+    let payload = {
+      action: action,
+      response_message: message
+    };
+
+    if (url.includes("update_site_visit")) {
+      const selectDate = this.querySelector(".select-date"); // Move it here inside
+      if (action === "accept") {
+        const confirmed_date = selectDate.value;
+        if (!confirmed_date) {
+          alert("Please select a confirm date.");
+          selectDate.reportValidity();
+          return;
+        }
+        payload.confirmed_date = confirmed_date;
+      }
+    }
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": this.querySelector("[name=csrfmiddlewaretoken]").value,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert(data.success);
+        location.reload();
+      } else {
+        alert(data.error || "Something went wrong.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Network Error.");
+    });
+  });
+
+
+  const acceptBtn = form.querySelector(".accept-btn");
+  const rejectBtn = form.querySelector(".reject-btn");
+  const selectDate = form.querySelector(".select-date");
+
+  if (selectDate && acceptBtn && rejectBtn) {
+    acceptBtn.addEventListener("mouseenter", () => {
+      selectDate.style.display = "block";
+    });
+    rejectBtn.addEventListener("mouseenter", () => {
+      selectDate.style.display = "none";
+    });
+  }
+});
+</script>
+
+</body>
+</html>

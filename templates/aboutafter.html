@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Worker Finder</title>
+    <link rel="stylesheet" href='{% static "css/about.css" %}'>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <h1>Worker Finder</h1>
+    </div>
+    <nav class="menubar">
+        <ul>
+            <li><a href='{% url "afterlogin"%}'>Home</a></li>
+            <li><a href='{% url "servicesafter"%}'>Services</a></li>
+            <li><a href='{% url "aboutafter"%}' class="active">About</a></li>
+          
+        </ul>
+    </nav>
+</header>
+
+<section class="about-hero">
+    <div class="about-content">
+        <h2>About Worker Finder</h2>
+        <p>Your trusted platform to connect with skilled professionals for your everyday needs.</p>
+    </div>
+</section>
+
+<section class="company-info">
+    <div class="container">
+        <h2>Our Mission</h2>
+        <p>
+            At <strong>Worker Finder</strong>, our mission is to bridge the gap between skilled workers and those in need of their services.<br>  
+            We believe that finding reliable and experienced professionals should be effortless, and with our platform, it truly is—right at your fingertips.<br>  
+            Whether you're searching for a skilled electrician, a dependable plumber, a meticulous house cleaner, or even a highly-rated carpenter, our platform connects users with the right professionals based on their expertise and star ratings.<br>  
+            Workers can easily sign in, create their profiles, highlight their skills, and start receiving job requests instantly.<br>  
+            This system not only empowers workers by providing a steady stream of job opportunities but also ensures that users get access to the best service providers in their area.<br>  
+            By leveraging real-time reviews and ratings, we ensure that only the most skilled and trustworthy professionals rise to the top, making the selection process transparent and hassle-free.<br>  
+            Our journey toward success is fueled by our commitment to convenience, reliability, and efficiency.<br>  
+            We envision a world where anyone can hire a skilled professional within minutes, and every hardworking individual can find meaningful work that matches their expertise.<br>  
+            Through <strong>Worker Finder</strong>, we are revolutionizing the way people connect, work, and thrive—one job at a time.<br>  
+        </p>
+    </div>
+        
+    <div class="container">
+        <h2>Our Vision</h2>
+        <p>
+            At <strong>Worker Finder</strong>, our primary goal is to create a seamless and efficient platform that connects skilled workers with those who need their expertise.<br>  
+            We aim to eliminate the struggle of finding reliable professionals by providing a user-friendly and transparent system that ensures the best services at competitive rates.<br>  
+            By integrating advanced search and filtering options, we ensure that users can quickly find workers who meet their exact needs based on experience, skill set, and customer ratings.<br>  
+            Our platform is designed to empower workers by giving them a space to showcase their talents, build their reputation, and secure consistent work opportunities.<br>  
+            We strive to improve job accessibility, ensuring that skilled individuals can reach a broader customer base and enhance their careers.<br>  
+            Additionally, we are committed to maintaining a high standard of service by implementing a reliable rating and review system, ensuring that only the most qualified professionals receive top visibility.<br>  
+            Our long-term vision is to expand our network, making Worker Finder the go-to platform for hiring skilled professionals worldwide.<br>  
+            Through innovation, trust, and efficiency, we are on a mission to transform the way people hire and work, ensuring mutual success for both service providers and users.<br>  
+        </p>
+        
+    </div>
+</section>
+
+<section class="team">
+    <h2>Meet Our Founders</h2>
+    <div class="founders">
+        <div class="founder">
+            <img src='{% static "images\ceo1.jpg" %}' alt="Founder 1">
+            <h3>Mohammed Rumaise </h3>
+            <p>Co-Founder & CEO</p>
+        </div>
+        <div class="founder">
+            <img src='{% static "images\ceo2.jpg" %}' alt="Founder 2">
+            <h3>Faseeh Rahiman</h3>
+            <p>Co-Founder & COO</p>
+        </div>
+    </div>
+</section>
+
+ <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <div class="social-links">
+                <a href="#" target="_blank">Facebook</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Instagram</a>
+            </div>
+        </div>
+        <p>&copy; 2025 Worker Finder. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

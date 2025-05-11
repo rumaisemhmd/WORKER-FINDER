@@ -1,0 +1,80 @@
+
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f2f5f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  .bank-details-form {
+    max-width: 500px;
+    background: white;
+    margin: 60px auto;
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+
+  .bank-details-form h2 {
+    text-align: center;
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+
+  .bank-details-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+  }
+
+  .bank-details-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #fafafa;
+  }
+
+  .bank-details-form button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .bank-details-form button:hover {
+    background: linear-gradient(to right, #0056b3, #00aaff);
+  }
+</style>
+
+<div class="bank-details-form">
+  <h2>Add Your Bank Account</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <label for="full_name">Full Name:</label>
+    <input type="text" name="full_name" id="full_name" placeholder="same as in your bank-account" required>
+
+   <label for="account_number">Account Number:</label>
+<input type="text" name="account_number" id="account_number" required pattern="[0-9]{6,18}" title="Enter a valid account number (6 to 18 digits)" inputmode="numeric">
+
+    <label for="ifsc_code">IFSC Code:</label>
+    <input type="text" name="ifsc_code" id="ifsc_code" required>
+
+    <button type="submit">Save Bank Details</button>
+  </form>
+</div>

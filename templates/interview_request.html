@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Request</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 30px;
+            color: #2b2d42;
+        }
+
+        form {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: auto;
+            padding: 30px 35px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 15px;
+            border-radius: 10px;
+            border: 1.5px solid #ccc;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #28a745, #218838);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            transform: translateY(-2px);
+        }
+
+        /* Popup Modal Styling */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-box {
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: fadeInScale 0.3s ease-in-out;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .popup-box h3 {
+            color: #28a745;
+            font-size: 22px;
+            margin: 0 0 20px;
+        }
+
+        .close-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #c82333;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            form {
+                padding: 25px 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Request Interview (For Unverified Workers)</h2>
+
+    <form method="POST" onsubmit="showPopup(event)">
+        {% csrf_token %}
+        <input type="text" name="full_name" placeholder="Full Name" required>
+        <input type="number" name="age" placeholder="Age" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <select name="gender" required>
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+        <select name="job_role" required>
+            <option value="">Select Job Category</option>
+            <option value="Mechanic">Mechanic</option>
+            <option value="Electrician">Electrician</option>
+            <option value="Carpenter">Carpenter</option>
+            <option value="Plumber">Plumber</option>
+            <option value="House Movers">House Movers</option>
+            <option value="Construction Worker">Construction Workers</option>
+            <option value="Fabricator">Fabricator</option>
+            <option value="Welder">Welder</option>
+            <option value="Gardener">Landscaper/Gardener</option>
+            <option value="House Cleaner">House Cleaner</option>
+            <option value="Coconut Picker">Coconut Picker</option>
+            <option value="Driver">Driver</option>
+            <option value="AC Technician">AC Technician</option>
+            <option value="CCTV Technician">CCTV Technician</option>
+            <option value="Farm Worker">Farm Worker</option>
+            <option value="Childcare/Babysitter">Childcare/Babysitter</option>
+        </select>
+        <input type="text" name="experience" placeholder="Work Experience (Optional)">
+        <input type="text" name="district" placeholder="District" required>
+        <input type="text" name="state" placeholder="State" required>
+        <button type="submit">Apply for Interview</button>
+    </form>
+
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-box">
+            <h3>Thank you! Our executive will contact you shortly.</h3>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+   <script>
+    function showPopup(event) {
+        event.preventDefault();  // Prevent default form submission
+        document.getElementById('popupOverlay').style.display = 'flex';
+
+        // Submit the form after showing popup for 1 second
+        setTimeout(() => {
+            event.target.submit();
+        }, 1000);
+    }
+
+    function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
