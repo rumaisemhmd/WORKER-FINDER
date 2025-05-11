@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Worker Finder</title>
+    <link rel="stylesheet" href='{% static "css/about.css" %}'>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <h1>Worker Finder</h1>
+    </div>
+    <nav class="menubar">
+        <ul>
+            <li><a href='{% url "afterloginw"%}'>Home</a></li>
+            <li><a href='{% url "aboutafterW"%}'>About</a></li>
+            <li><a href="#" class="active">Privacy Policy</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="about-hero">
+    <div class="about-content">
+        <h2>Privacy Policy for Workers</h2>
+        <p>Your trust is our priority. Here’s how we handle your data on Worker Finder.</p>
+    </div>
+</section>
+
+<section class="company-info">
+    <div class="container">
+        <h2>1. Information We Collect</h2>
+        <p>We collect the following types of data when you register or use Worker Finder:</p>
+        <ul>
+            <li>Personal details (full name, phone number, email address)</li>
+            <li>Professional details (skills, experience, wage, service hours)</li>
+            <li>Uploaded images, ratings, and reviews</li>
+            <li>Booking and transaction history</li>
+            <li>Bank details for withdrawals (account number, IFSC, etc.)</li>
+            <li>OTP verification data</li>
+            <li>Device and browser information (used for session security)</li>
+        </ul>
+
+        <h2>2. How We Use Your Information</h2>
+        <ul>
+            <li>To display your profile to users looking for skilled workers</li>
+            <li>To manage and confirm bookings, payments, and work completions</li>
+            <li>To process OTP verification and prevent fraud</li>
+            <li>To handle wallet balance and withdrawal requests</li>
+            <li>To send notifications related to bookings, payments, and profile activity</li>
+            <li>To improve the platform based on feedback and usage analytics</li>
+        </ul>
+
+        <h2>3. Payment & Wallet Information</h2>
+        <p>
+            All payment data is securely processed. We do not store card or UPI information. Wallet balances and earnings are visible only to the respective worker and are managed internally.
+            Withdrawal requests require valid bank details and password verification for safety.
+        </p>
+
+        <h2>4. Who Can See Your Data</h2>
+        <p>
+            Only verified users with active bookings can view your contact information. Public profile information (e.g. name, skills, rating) is visible to logged-in users.
+        </p>
+
+        <h2>5. Location and Session Data</h2>
+        <p>
+            We may use location-based filtering to show nearby workers. We also store session data to enhance login security and prevent unauthorized access.
+        </p>
+
+        <h2>6. Data Security</h2>
+        <p>
+            We follow strict data protection practices and encryption methods. Only authorized staff can access sensitive data. OTPs and passwords are securely stored using hashing and encryption techniques.
+        </p>
+
+        <h2>7. Your Rights</h2>
+        <p>
+            You can access, update, or delete your profile at any time. If you wish to permanently delete your account and associated data, contact our support team.
+        </p>
+
+        <h2>8. Policy Updates</h2>
+        <p>
+            This privacy policy may be updated from time to time. Significant changes will be notified via email or dashboard. Continued use of the platform indicates your acceptance of the updated terms.
+        </p>
+
+        <h2>9. Contact Us</h2>
+        <p>
+            For any privacy-related questions or requests, email us at <strong>support@workerfinder.com</strong> or call +91 98765 43210.
+        </p>
+    </div>
+</section>
+
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <div class="social-links">
+                <a href="#" target="_blank">Facebook</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Instagram</a>
+            </div>
+        </div>
+        <p>&copy; 2025 Worker Finder. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

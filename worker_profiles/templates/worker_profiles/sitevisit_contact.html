@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Site Visit Contact</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .note {
+      margin-bottom: 25px;
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      max-width: 1000px;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(255, 204, 0, 0.2);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 1000px;
+      overflow: hidden;
+    }
+
+    .left-section, .right-section {
+      flex: 1;
+      padding: 25px;
+      min-width: 300px;
+    }
+
+    .left-section {
+      border-right: 1px solid #eee;
+    }
+
+    h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #007bff;
+      border-bottom: 2px solid #007bff;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+
+    .worker-info p {
+      font-size: 17px;
+      margin: 12px 0;
+      color: #555;
+    }
+
+    .worker-info strong {
+      color: #222;
+    }
+
+    .worker-info a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 600;
+    }
+
+    .worker-info a:hover {
+      text-decoration: underline;
+    }
+
+    .right-section h4 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #007bff;
+    }
+
+    .otp-warning {
+      background-color: #e2f0d9;
+      color: #27632a;
+      border-left: 5px solid #28a745;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .readonly-otp {
+      font-weight: bold;
+      letter-spacing: 2px;
+      padding: 8px;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left-section {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      .note {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- LEFT SECTION -->
+    <div class="left-section">
+      <h3>Worker Information</h3>
+      <div class="worker-info">
+        <p><strong>Name:</strong> {{ visit.worker.full_name }}</p>
+        <p><strong>Visit Date:</strong> {{ visit.confirmed_date }}</p>
+        <p><strong>Phone:</strong> <a href="tel:{{ visit.worker.mobile }}">{{ visit.worker.mobile }}</a></p>
+        <p><strong>Email:</strong> <a href="mailto:{{ visit.worker.email }}">{{ visit.worker.email }}</a></p>
+      </div>
+    </div>
+
+    <!-- RIGHT SECTION -->
+
+
+    <div class="right-section">
+      <h4>OTP Verification Code</h4>
+      <div class="otp-warning">
+        Only share this OTP after the work is <strong>fully completed</strong>.
+      </div>
+     {% if visit.site_visit_payment.payment_done  %}
+          <p><strong>OTP (Share with Worker):</strong>
+            <input type="text" value="{{ visit.verification_code }}" readonly style="font-weight:bold; letter-spacing: 2px;">
+          </p>
+        {% endif %}
+    </div>
+
+  </div>
+</body>
+</html>

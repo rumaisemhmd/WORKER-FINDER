@@ -1,0 +1,194 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Booking Updates</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fdfbf5;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #ecebe4;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .booking-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .booking-card p {
+            margin: 8px 0;
+            font-size: 15px;
+        }
+
+        .booking-card strong {
+            display: inline-block;
+            width: 140px;
+            color: #333;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .accepted {
+            color: green;
+        }
+
+        .rejected {
+            color: red;
+        }
+
+        .pending {
+            color: orange;
+        }
+
+        .worker-msg {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-left: 6px solid #1976D2;
+            border-radius: 8px;
+        }
+
+        .worker-msg strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .info-msg {
+            margin-top: 15px;
+            padding: 12px 18px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            border-radius: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .pay-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #1976D2;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+        }
+
+        .pay-button:hover {
+            background-color: #135ba1;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Your Booking Status</h2>
+
+    {% if bookings %}
+        {% for booking in bookings %}
+            <div class="booking-card">
+                <p><strong>Worker:</strong> {{ booking.worker.full_name }}</p>
+                <p><strong>Booking Dates:</strong> {{ booking.start_date }} to {{ booking.end_date }}</p>
+                <p><strong>Work Site:</strong> {{ booking.work_site }}</p>
+                <p><strong>Status:</strong>
+                    <span class="status {% if booking.status == 'Accepted' %}accepted{% elif booking.status == 'Rejected' %}rejected{% endif %}">
+                        {{ booking.status }}
+                    </span>
+                </p>
+
+                {% if booking.worker_response %}
+                    <div class="worker-msg">
+                        <strong>Worker’s Response:</strong>
+                        {{ booking.worker_response }}
+                    </div>
+                {% endif %}
+
+                {% if booking.status == "Accepted" %}
+                    <div class="info-msg">
+                        Your booking has been accepted. Please proceed to the
+                        <a href="{% url 'worker_profiles:user_booking' %}" style="font-weight: bold; color: #1976D2; text-decoration: underline;">
+                            Bookings
+                        </a>
+                        section to make the payment and confirm your slot.
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center; color: #444;">You have no bookings yet.</p>
+    {% endif %}
+
+   <h2>Your Site Visit Status</h2>
+
+{% if site_visits %}
+    {% for visit in site_visits %}
+        <div class="booking-card">
+            <p><strong>Worker:</strong> {{ visit.worker.full_name }}</p>
+
+            {% if visit.status == "Accepted" %}
+                <p><strong>Confirmed Date:</strong> {{ visit.confirmed_date }}</p>
+
+                {% if visit.site_visit_payment.payment_done and visit.site_visit_payment.admin_approved %}
+                    <p><strong>Status:</strong> <span class="status accepted">Paid</span></p>
+                    <a href="{% url 'worker_profiles:sitevisit_contact' visit.id %}" class="pay-button">Contact</a>
+                {% else %}
+                 {% if visit.worker_response %}
+                    <div class="worker-msg">
+                        <strong>Worker’s Response:</strong>
+                        {{ visit.worker_response }}
+                    </div>
+                {% endif %}
+                 <a href="{% url 'worker_profiles:site_visit_payment_qr' visit.id %}" class="pay-button">Proceed to Payment</a>
+
+                {% endif %}
+
+            {% elif visit.status == "Rejected" %}
+                <p><strong>Preferred Dates:</strong> {{ visit.preferred_date1 }}, {{ visit.preferred_date2 }}, {{ visit.preferred_date3 }}</p>
+                <p><strong>Status:</strong> <span class="status rejected">{{ visit.status }}</span></p>
+                {% if visit.worker_response %}
+                    <div class="worker-msg">
+                        <strong>Worker’s Response:</strong>
+                        {{ visit.worker_response }}
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <p><strong>Preferred Dates:</strong> {{ visit.preferred_date1 }}, {{ visit.preferred_date2 }}, {{ visit.preferred_date3 }}</p>
+                <p><strong>Location:</strong> {{ visit.location }}</p>
+                <p><strong>Status:</strong> <span class="status pending">{{ visit.status }}</span></p>
+                {% if visit.worker_response %}
+                    <div class="worker-msg">
+                        <strong>Worker’s Response:</strong>
+                        {{ visit.worker_response }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p style="text-align: center; color: #444;">You have no site visit updates yet.</p>
+{% endif %}
+
+</body>
+</html>

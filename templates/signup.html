@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Registration</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .field {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .full-width {
+      flex: 1 1 100%;
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: #fff;
+      border: 1px solid #ccc;
+      max-height: 180px;
+      overflow-y: auto;
+      border-radius: 8px;
+    }
+
+    .autocomplete-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .autocomplete-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #1e40af;
+    }
+
+    @media (max-width: 768px) {
+      .field {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+ <div class="container">
+    {% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+    <h2>User Registration</h2>
+    <form id="userRegistrationForm" action='{% url "register_user"%}' method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" required />
+      </div>
+
+      <div class="field">
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name" required />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="field">
+        <label for="mobile">Mobile</label>
+        <input type="tel" id="mobile" name="mobile" required pattern="[0-9]{10}"  maxlength="10" minlength="10" />
+      </div>
+
+      <div class="field autocomplete-wrapper">
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" autocomplete="off" required />
+        <div id="stateSuggestions" class="autocomplete-list" style="display: none;"></div>
+      </div>
+
+      <div class="field">
+        <label for="district">District</label>
+        <input list="districtList" id="district" name="district" required />
+        <datalist id="districtList"></datalist>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required />
+      </div>
+
+      <div class="field full-width">
+        <button type="submit" class="submit-btn">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const states = [
+      "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat",
+      "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
+      "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+      "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+      "Uttarakhand", "West Bengal"
+    ];
+
+    const stateDistricts = {
+      "Karnataka": [
+        "Bagalkot", "Ballari", "Belagavi", "Bengaluru Rural", "Bengaluru Urban", "Bidar",
+        "Chamarajanagar", "Chikballapur", "Chikkamagaluru", "Chitradurga", "Dakshina Kannada",
+        "Davanagere", "Dharwad", "Gadag", "Hassan", "Haveri", "Kalaburagi", "Kodagu",
+        "Kolar", "Koppal", "Mandya", "Mysuru", "Raichur", "Ramanagara", "Shivamogga",
+        "Tumakuru", "Udupi", "Uttara Kannada", "Vijayapura", "Yadgir"
+      ],
+      "Kerala": [
+        "Alappuzha", "Ernakulam", "Idukki", "Kannur", "Kasaragod", "Kollam", "Kottayam",
+        "Kozhikode", "Malappuram", "Palakkad", "Pathanamthitta", "Thiruvananthapuram",
+        "Thrissur", "Wayanad"
+      ]
+    };
+
+    const stateInput = document.getElementById("state");
+    const suggestionBox = document.getElementById("stateSuggestions");
+    const districtList = document.getElementById("districtList");
+
+    stateInput.addEventListener("input", () => {
+      const input = stateInput.value.toLowerCase();
+      suggestionBox.innerHTML = "";
+
+      if (!input) {
+        suggestionBox.style.display = "none";
+        return;
+      }
+
+      const filtered = states.filter(state => state.toLowerCase().startsWith(input));
+      if (filtered.length === 0) {
+        suggestionBox.style.display = "none";
+        return;
+      }
+
+      filtered.forEach(state => {
+        const item = document.createElement("div");
+        item.textContent = state;
+        item.classList.add("autocomplete-item");
+        item.addEventListener("click", () => {
+          stateInput.value = state;
+          suggestionBox.style.display = "none";
+          loadDistricts(state);
+        });
+        suggestionBox.appendChild(item);
+      });
+      suggestionBox.style.display = "block";
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".autocomplete-wrapper")) {
+        suggestionBox.style.display = "none";
+      }
+    });
+
+    function loadDistricts(state) {
+      districtList.innerHTML = "";
+      if (stateDistricts[state]) {
+        stateDistricts[state].forEach(d => {
+          const option = document.createElement("option");
+          option.value = d;
+          districtList.appendChild(option);
+        });
+      }
+    }
+  </script>
+</body>
+</html>

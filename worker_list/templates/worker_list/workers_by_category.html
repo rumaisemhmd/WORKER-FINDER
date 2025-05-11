@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ job_category }} Workers</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #343a40;
+      color: white;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .search-container {
+      text-align: center;
+      margin: 90px auto 30px;
+      width: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      border: 2px solid #ff6b00;
+      height:60px;
+    }
+    .search-container input {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      width: 100%;
+    }
+    .search-container button {
+      background: #ff6b00;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .search-container button i {
+      font-size: 18px;
+    }
+    .search-container button:hover {
+      background: #e55b00;
+    }
+    .worker-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px 5%;
+      justify-items: center;
+      flex: 1;
+    }
+    .worker-card {
+      background: white;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+      border-radius: 12px;
+      text-align: center;
+      padding: 20px;
+      width: 300px;
+      border: 1px solid #ddd;
+      transition: transform 0.3s, box-shadow 0.3s;
+      height: 400px;
+      position: relative;
+    }
+    .worker-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    .worker-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 4px solid #ff6b00;
+    }
+    .default-profile {
+      background: url("{% static 'images/default_profile.png' %}");
+      background-size: cover;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 4px solid #ff6b00;
+      display: inline-block;
+    }
+    .worker-card h3 {
+      font-size: 20px;
+      margin: 5px 0;
+      color: #343a40;
+    }
+    .worker-card p {
+      margin: 5px 0;
+      font-size: 15px;
+      color: #555;
+    }
+    .worker-card .location {
+      font-weight: bold;
+      color: #ff6b00;
+    }
+    .star-rating {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    .star-rating .stars {
+      color: #ffb400;
+      font-size: 16px;
+    }
+    .view-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #ff6b00;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: 0.3s;
+    }
+    .view-button:hover {
+      background: #e55b00;
+    }
+    .no-workers {
+      text-align: center;
+      font-size: 18px;
+      color: #777;
+      padding: 50px;
+    }
+    .no-workers img {
+      width: 150px;
+      margin-bottom: 15px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #222;
+      color: white;
+      margin-top: auto;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <h1>{{ job_category }} Workers</h1>
+</header>
+
+<div class="search-container">
+  <input type="text" id="search-location" placeholder="Search by district or state">
+  <button onclick="searchWorkers()"><i class="fas fa-search"></i> Search</button>
+</div>
+
+<section class="worker-list" id="worker-list">
+  {% for worker in workers %}
+    <div class="worker-card">
+      {% if worker.profile_image %}
+        <img src="{{ worker.profile_image.url }}" alt="{{ worker.full_name }}">
+      {% else %}
+        <div class="default-profile"></div>
+      {% endif %}
+      <h3>{{ worker.full_name }}</h3>
+      <p><strong>Experience:</strong> {{ worker.experience }} years</p>
+      <p><strong>Daily Wage:</strong> ₹{{ worker.daily_wage }}</p>
+      <p><strong>Working Hours:</strong> {{ worker.working_hours }} hrs/day</p>
+
+      {% if worker.rating > 0 %}
+      <div class="star-rating">
+        <span style="font-weight: bold; color: #333;">{{ worker.rating|floatformat:1 }}</span>
+        <span class="stars">
+          {% for i in "12345"|make_list %}
+            {% if worker.rating >= forloop.counter %}
+              <i class="fas fa-star"></i>
+            {% elif worker.rating >= forloop.counter0|add:"0.5" %}
+              <i class="fas fa-star-half-alt"></i>
+            {% else %}
+              <i class="far fa-star"></i>
+            {% endif %}
+          {% endfor %}
+        </span>
+      </div>
+      {% else %}
+        <p style="color: gray; font-size: 14px; margin: 5px 0;">No ratings yet</p>
+      {% endif %}
+
+      <p class="location">{{ worker.district }}, {{ worker.state }}</p>
+      <a href="{% url 'worker_profiles:profile' worker.id %}" class="view-button"><button class="view-button">View Profile</button></a>
+    </div>
+  {% empty %}
+    <div class="no-workers">
+      <img src="{% static 'images/no_data.png' %}" alt="No Workers">
+      <p><strong>No registered workers in this category yet.</strong></p>
+      <p>We are continuously expanding. Please check back later.</p>
+    </div>
+  {% endfor %}
+</section>
+
+<footer>
+  <p>&copy; 2025 Worker Finder. All rights reserved.</p>
+</footer>
+
+<script>
+  function searchWorkers() {
+    let input = document.getElementById("search-location").value.toLowerCase();
+    let workerCards = document.querySelectorAll(".worker-card");
+
+    workerCards.forEach(card => {
+      let location = card.querySelector(".location").textContent.toLowerCase();
+      if (location.includes(input)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
+</script>
+</body>
+</html>

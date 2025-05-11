@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Worker Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="email"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px 10px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #1976D2;
+        }
+
+        .login-container .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-container .links a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .login-container .links a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .signup-text a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+{% if request.session.worker_id %}
+    <script>
+        window.location.href = "{% url 'afterloginw' %}";
+    </script>
+{% endif %}
+
+    <div class="login-container">
+        <h2>Worker Login</h2>
+        <form action='{% url "worker_acc:worker_login"%}' method="POST">
+            {% csrf_token %}
+            <input type="text" name="mobile" placeholder="Mobile number" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+
+
+            <div class="links">
+                <a href="/forgot_password_worker">Forgot Password?</a>
+            </div>
+
+            <div class="signup-text">
+                Don't have an account? <a href='{% url "register"%}'>Sign up</a>
+            </div>
+
+            {% for message in messages %}
+            <p style = "color:red;">{{message}}</p>
+            {% endfor %}
+        </form>
+    </div>
+</body>
+<script>
+    (function preventBack() {
+        window.history.pushState(null, "", window.location.href);
+        window.onpopstate = function () {
+            window.history.pushState(null, "", window.location.href);
+        };
+    })();
+</script>
+</html>

@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Finder</title>
+    <link rel="stylesheet" href='{% static "css/afterloginw.css"%}'>
+    <script src='{% static "script.js"%}'></script>
+
+</head>
+<body>
+   <header>
+    <div class="logo">
+        <h1>Worker Finder</h1>
+    </div>
+    <nav class="menubar">
+        <ul>
+            <li><a href='{% url "afterloginw"%}'> Home</a></li>
+             <li><a href='{% url "worker_profiles:worker_bookings"%}'>Bookings</a></li>
+            <li><a href='{% url "worker_profiles:worker_notifications"%}'>Notifications</a></li>
+            <li class="dropdown">
+                <a href="#">Account&#9662;</a>
+                <ul class="dropdown-menu">
+                    <li><a href='{% url "worker_profiles:my_profile"%}'>Profile</a></li>
+                    <li><a href='{% url "aboutafterW"%}'>About</a></li>
+                    <li><a href='{% url "helpcenter"%}'>Help Center</a></li>
+                    <li><a href='{% url "worker_acc:worker_logout"%}'>Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+
+<section class="slider-container">
+    <div class="slider">
+        <div class="slide active">
+            <img src='{% static "images/slideimg1.jpg" alt="Image 1"%}'>
+            <div class="caption">Your Skills <br>Your Terms <br>Get Hired Instantly!</div>
+        </div>
+        <div class="slide">
+            <img src='{% static "images/slideimg2.jpg" alt="Image 2"%}'>
+            <div class="caption">Connect with Employers <br>Looking for Your Expertise </div>
+        </div>
+        <div class="slide">
+            <img src='{% static "images/slideimg3.jpg" alt="Image 3"%}'>
+            <div class="caption">Work on Your Schedule-Earn More, <BR>Stress Less</BR></div>
+        </div>
+    </div>
+
+    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="next" onclick="changeSlide(1)">&#10095;</button>
+</section>
+
+<section class="highlight-text">
+    <h2>WE HAVE MORE THAN <br><span>10000+ ACTIVE USERS</span></h2>
+</section>
+
+
+
+<section class="action-boxes">
+    <a href="{% url 'worker_profiles:worker_bookings' %}" class="box" >Bookings</a>
+    <a href='{% url "worker_profiles:add_bank_details"%}' class="box">Wallet</a>
+    <a href="{% url 'worker_profiles:worker_notifications' %}" class="box">Notifications</a>
+    <a href='{% url "privacy_policy" %}' class="box" >Privacy Policy</a>
+    <a href='{% url "helpcenter"%}' class="box">Help Center</a>
+    <a href='{% url "aboutafterW"%}' class="box">About</a>
+</section>
+<!-- Modal Structure -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p>Content for <span id="modal-content"></span></p>
+    </div>
+</div>
+
+<script>
+    function openModal(title) {
+        document.getElementById("modal").style.display = "flex";
+        document.getElementById("modal-title").innerText = title;
+        document.getElementById("modal-content").innerText = title;
+    }
+
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+</script>
+   
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <div class="social-links">
+                <a href="#" target="_blank">Facebook</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Instagram</a>
+            </div>
+        </div>
+        <p>&copy; 2025 Worker Finder. All rights reserved.</p>
+    </footer>
+
+
+
+
+</body>
+</html>

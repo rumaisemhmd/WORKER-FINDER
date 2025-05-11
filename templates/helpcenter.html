@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Help Center | Worker Finder</title>
+  <link rel="stylesheet" href="{% static 'css/helpcenter.css' %}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+    }
+    header {
+      background: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .help-hero {
+      background: linear-gradient(to right, #007bff, #0056b3);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 20px;
+    }
+    .faq-item {
+      background: #fff;
+      padding: 15px 20px;
+      border-left: 4px solid #007bff;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .contact-support {
+      background: #fff;
+      padding: 40px 20px;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .support-box {
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 8px;
+      display: inline-block;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    footer {
+      background: #004080;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .footer-links a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Worker Finder Help Center</h1>
+  </header>
+
+  <section class="help-hero">
+    <h2>Need Help? You're in the Right Place</h2>
+    <p>Support for both users and workers — all in one place.</p>
+  </section>
+
+  <section class="faq container">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <h3>How do I create an account?</h3>
+      <p>Click on “Sign Up” and choose whether you're a user or a worker. Follow the steps to complete your profile.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>How do bookings work?</h3>
+      <p>Users can send a booking or site visit request. Once accepted by the worker, payment is required to confirm.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>How is payment handled?</h3>
+      <p>Users pay upfront. Funds are held until the work is completed and OTP verified. Then it is credited to the worker’s wallet.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>How can I withdraw money?</h3>
+      <p>Workers can request a withdrawal in the Wallet section. Bank details are required, and the minimum amount is ₹500.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Who do I contact if I face an issue?</h3>
+      <p>See the contact section below. We respond within 24 hours.</p>
+    </div>
+  </section>
+
+  <section class="contact-support container">
+    <h2>Contact Support</h2>
+    <p>If you're stuck or need help, contact us directly:</p>
+    <div class="support-box">
+      Customer Support: +91 98765 43210<br>
+      Worker Support: +91 91234 56789
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a> |
+      <a href="#">Terms of Service</a>
+    </div>
+    <p>&copy; 2025 Worker Finder. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

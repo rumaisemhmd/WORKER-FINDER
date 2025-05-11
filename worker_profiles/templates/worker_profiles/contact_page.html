@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Worker Information</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .note {
+      margin-bottom: 25px;
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      max-width: 1000px;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(255, 204, 0, 0.2);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 1000px;
+      overflow: hidden;
+    }
+
+    .left-section, .right-section {
+      flex: 1;
+      padding: 25px;
+      min-width: 300px;
+    }
+
+    .left-section {
+      border-right: 1px solid #eee;
+    }
+
+    h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #007bff;
+      border-bottom: 2px solid #007bff;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+
+    .worker-info p {
+      font-size: 17px;
+      margin: 12px 0;
+      color: #555;
+    }
+
+    .worker-info strong {
+      color: #222;
+    }
+
+    .worker-info a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 600;
+    }
+
+    .worker-info a:hover {
+      text-decoration: underline;
+    }
+
+    .right-section h4 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #007bff;
+    }
+
+    .right-section p {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #444;
+    }
+
+    .rating {
+      font-size: 34px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .rating .star {
+      transition: color 0.2s;
+    }
+
+    .rating .star:hover,
+    .rating .star.hovered,
+    .rating .star.selected {
+      color: #ffcc00;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left-section {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      .note {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="container">
+
+    <div class="left-section">
+      <h3>Worker Information</h3>
+      <div class="worker-info">
+        <p><strong>Name:</strong> {{ booking.worker.full_name }}</p>
+        <p><strong>Booked Date:</strong> {{ booking.start_date }}</p>
+        <p><strong>To:</strong> {{ booking.end_date }}</p>
+        <p><strong>Phone:</strong> <a href="tel:{{ booking.worker.mobile }}">{{ booking.worker.mobile }}</a></p>
+        <p><strong>Email:</strong> <a href="mailto:{{ booking.worker.email }}">{{ booking.worker.email }}</a></p>
+      </div>
+    </div>
+
+
+    <div class="right-section">
+      <h4>Rate this Worker</h4>
+      <p>Your rating helps other users find the best professionals. Please give your honest feedback based on your experience.</p>
+
+      <form id="rating-form" method="post" action="{% url 'worker_profiles:submit_rating' booking.id %}" >
+        {% csrf_token %}
+        <div class="rating" id="star-rating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+        <input type="hidden" name="rating_value" id="rating-value" />
+        <button type="submit" class="submit-btn">Submit Rating</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const stars = document.querySelectorAll(".rating .star");
+    const ratingValueInput = document.getElementById("rating-value");
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener("mouseover", () => {
+        const value = parseInt(star.getAttribute("data-value"));
+        highlightStars(value);
+      });
+
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating);
+      });
+
+      star.addEventListener("click", () => {
+        selectedRating = parseInt(star.getAttribute("data-value"));
+        ratingValueInput.value = selectedRating;
+        highlightStars(selectedRating);
+      });
+    });
+
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        const value = parseInt(star.getAttribute("data-value"));
+        star.classList.toggle("selected", value <= rating);
+      });
+    }
+  </script>
+</body>
+</html>

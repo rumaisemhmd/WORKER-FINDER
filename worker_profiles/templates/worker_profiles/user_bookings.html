@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Bookings</title>
+    <style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef2f7;
+    margin: 0;
+    padding: 0;
+  }
+
+  .booking-section {
+    display: flex;
+    flex-direction: column;
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-title {
+    text-align: center;
+    background: linear-gradient(to right, #ff7f50, #ffcc70);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 26px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .accepted-title {
+    background: linear-gradient(to right, #007bff, #00d4ff);
+  }
+
+  .booking-card {
+    border: 2px solid #ccc;
+    border-radius: 14px;
+    background-color: #fdfdfd;
+    padding: 18px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .booking-card:hover {
+    background-color: #f0f8ff;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.1);
+    transform: scale(1.01);
+  }
+
+  .highlight-today {
+    border: 3px solid #28a745 !important;
+    background: linear-gradient(to right, #eaffea, #c8facc) !important;
+  }
+
+  .today-badge {
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    z-index: 5;
+  }
+
+  .dropbtn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #444;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .dropdown-content a {
+    padding: 12px 16px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f2f2f2;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+  }
+
+  p {
+    margin: 6px 0;
+    color: #444;
+  }
+
+  .pay-button {
+    margin-top: 12px;
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .pay-button:hover {
+    background-color: #1b5e20;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .modal h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #888;
+  }
+
+  .success-message {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .otp-display {
+  margin-top: 14px;
+  padding: 12px 18px;
+  background: linear-gradient(to right, #ff9a8b, #ff6a88);
+  border: 2px dashed #fff;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 4px;
+  box-shadow: 0 2px 12px rgba(255, 106, 136, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.otp-display:hover {
+  transform: scale(1.03);
+}
+      .booking-section {
+        display: flex;
+        flex-direction: column;
+        max-width: 950px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+      }
+
+    </style>
+</head>
+<body>
+
+<div class="booking-section">
+  <h2 class="section-title">Pending Bookings (Payment Not Done)</h2>
+
+  {% if pending_bookings %}
+    {% for booking in pending_bookings %}
+      <div class="booking-card">
+        <h3 style="color: #00aa55;">Job Booking: {{ booking.start_date|date:"d M Y" }} → {{ booking.end_date|date:"d M Y" }}</h3>
+        <p><strong>Worker Name:</strong> {{ booking.worker.full_name }}</p>
+        <p><strong>Job Type:</strong> {{ booking.worker.worker_response }}</p>
+        <p><strong>District:</strong> {{ booking.worker.district }}, {{ booking.worker.state }}</p>
+        <a href="{% url 'worker_profiles:payment_qr' booking.id %}">
+          <button class="pay-button">Pay for Booking</button>
+        </a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align:center; color:crimson;">No pending bookings.</p>
+  {% endif %}
+</div>
+
+<div class="booking-section">
+  <h2 class="section-title accepted-title">Accepted Bookings (Payment Done)</h2>
+
+  {% if accepted_bookings %}
+    {% for booking in accepted_bookings %}
+      <div class="booking-card {% if booking.is_today %}highlight-today{% endif %}">
+        <div class="dropdown">
+          <button class="dropbtn">⋮</button>
+          <div class="dropdown-content">
+            <a href="{% url 'worker_profiles:submit_report' %}" class="report-btn" data-user="{{ booking.worker.id }}" data-name="{{ booking.worker.full_name }}">Report Worker</a>
+          </div>
+        </div>
+
+        {% if booking.is_today %}
+          <div class="today-badge">Today's Booking</div>
+        {% endif %}
+
+        <h3>From {{ booking.start_date|date:"d M Y" }} to {{ booking.end_date|date:"d M Y" }}</h3>
+        <p><strong>Worker:</strong> {{ booking.worker.full_name }}</p>
+        <p><strong>Email:</strong> {{ booking.worker.email }}</p>
+        <p><strong>Phone:</strong> {{ booking.worker.mobile }}</p>
+        {% if booking.booking_confirmed and booking.verification_code %}
+          <p><strong>OTP (Share with Worker):</strong>
+            <input type="text" value="{{ booking.verification_code }}" readonly style="font-weight:bold; letter-spacing: 2px;">
+          </p>
+        {% endif %}
+        <p><strong>Place:</strong> {{ booking.worker.district }}, {{ booking.worker.state }}</p>
+        <a href="{% url 'worker_profiles:contact_page' booking.id %}">
+          <button class="pay-button">Contact</button>
+        </a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align:center; color:red;">No accepted bookings found.</p>
+  {% endif %}
+</div>
+
+</body>
+</html>

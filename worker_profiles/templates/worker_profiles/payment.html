@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment QR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fb;
+            color: #333;
+            text-align: center;
+            padding: 40px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+        .amount-info {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .amount-info strong {
+            font-size: 20px;
+            color: #000;
+        }
+        .payment-details {
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 16px;
+            background-color: #f1f1f1;
+            padding: 15px 20px;
+            border-radius: 10px;
+        }
+        .payment-details p {
+            margin: 8px 0;
+        }
+        .qr-box {
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 18px;
+            margin-top: 20px;
+            display: block;
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 14px 25px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Pay Now</h2>
+
+    <div class="amount-info">
+        <p><strong>Total Amount:</strong> ₹{{ total_amount }}</p>
+    </div>
+
+    <div class="payment-details">
+        <p><strong>Worker Payment:</strong> ₹{{ worker_payment }}</p>
+        <p><strong>Platform Fee (5%):</strong> ₹{{ platform_fee }}</p>
+    </div>
+
+    <div class="qr-box">
+        <img src="data:image/png;base64,{{ qr_code }}" alt="Scan QR to Pay" />
+    </div>
+
+    <p>Scan using Google Pay, PhonePe, etc.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="upiTransactionId">Enter UPI Transaction ID</label>
+        <input type="text" name="upiTransactionId" id="upiTransactionId" placeholder="Enter UPI Transaction ID" required />
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

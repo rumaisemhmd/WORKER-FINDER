@@ -1,0 +1,136 @@
+{% load static %}
+
+{% block content %}
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f7fc;
+    margin: 0;
+    padding: 0;
+  }
+  .wallet-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  .wallet-header h1 {
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  .notice {
+    font-size: 14px;
+    color: #d9534f;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .withdraw-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+  }
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  .withdraw-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+    text-decoration: none;
+  }
+  .withdraw-button:hover {
+    background: linear-gradient(to right, #0056b3, #00aaff);
+  }
+  .back-button {
+    background: #f4f7fc;
+    color: #007bff;
+    border: 2px solid #007bff;
+    margin-top: 10px;
+  }
+  .back-button:hover {
+    background: #007bff;
+    color: white;
+  }
+</style>
+
+<div class="wallet-container">
+  <div class="wallet-header">
+    <h1>Withdraw Request</h1>
+  </div>
+
+  <div class="notice">
+    *Please double-check your bank details carefully.*<br>
+    We are not responsible for any mistakes in account information.
+  </div>
+
+  <form method="post" class="withdraw-form" id="withdrawForm">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="bank_name">Account Holder Name</label>
+      <input type="text" id="bank_name" name="bank_name" value="{{ bank_detail.full_name }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="bank_account_number">Bank Account Number</label>
+      <input type="text" id="bank_account_number" name="bank_account_number" value="{{ bank_detail.account_number }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="ifsc_code">IFSC Code</label>
+      <input type="text" id="ifsc_code" name="ifsc_code" value="{{ bank_detail.ifsc_code }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="amount">Withdraw Amount (₹)</label>
+      <input type="number" id="amount" name="amount" step="0.01" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Enter Login Password</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+
+    <button type="submit" class="withdraw-button">Submit Withdraw Request</button>
+
+    <a href="{% url 'worker_profiles:worker_wallet' %}" class="withdraw-button back-button">Back to Wallet</a>
+  </form>
+</div>
+{% if messages %}
+<script>
+  {% for message in messages %}
+    alert("{{ message }}");
+  {% endfor %}
+</script>
+{% endif %}
+{% endblock %}
