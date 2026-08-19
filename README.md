@@ -93,10 +93,10 @@ No live payment gateway is integrated — a deliberate scope decision (see Futur
 
 ## Tech Stack
 
-- **Backend:** Django, Python
-- **Frontend:** HTML, CSS, Bootstrap, JavaScript
-- **Database:** PostgreSQL
-- **Other:** Django Admin, Virtual Environment, Git/GitHub
+- Backend: Django, Python
+- Frontend: HTML, CSS, Bootstrap, JavaScript
+- Database: PostgreSQL
+- Other: Django Admin, Virtual Environment, Git/GitHub
 
 ## Installation
 
@@ -132,5 +132,5 @@ python manage.py runserver
 
 ## Author
 
-**Mohammed Rumaise A**
-[GitHub](https://github.com/rumaisemhmd) · [LinkedIn](https://linkedin.com/in/mohammed-rumaise-a-dev)
+Mohammed Rumaise A
+GitHub: https://github.com/rumaisemhmd · LinkedIn: https://linkedin.com/in/mohammed-rumaise-a-dev
