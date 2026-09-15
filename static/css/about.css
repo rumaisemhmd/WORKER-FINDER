@@ -171,10 +171,10 @@ header .logo h1 {
 }
 
 .about-hero {
-    background: url('images/about-bg.jpg') center/cover no-repeat;
+    background: linear-gradient(45deg, #007bff, #00d4ff) center/cover no-repeat;
     text-align: center;
     color: white;
-    padding: 20pxpx 20px;
+    padding: 20px 20px;
 }
 
 .about-hero .about-content h2 {

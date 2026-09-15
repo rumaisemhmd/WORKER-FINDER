@@ -117,7 +117,7 @@ header .logo h1 {
 }
 
 .help-center-hero {
-    background: url('images/help-center-bg.jpg') center/cover no-repeat;
+    background: linear-gradient(45deg, #007bff, #00d4ff) center/cover no-repeat;
     text-align: center;
     color: white;
     padding: 60px 20px;

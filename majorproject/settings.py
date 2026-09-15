@@ -28,12 +28,29 @@ from django.conf.global_settings import STATICFILES_DIRS, STATIC_ROOT, SESSION_S
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d=-xnlj@6)_fbp8w#$x+8_+=xv(x+c3-*hh6k*^mz6x-%!t#e&'
+# In production (Render) this is set via the SECRET_KEY environment variable.
+# The hardcoded value below is only a fallback for local development.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-d=-xnlj@6)_fbp8w#$x+8_+=xv(x+c3-*hh6k*^mz6x-%!t#e&',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()
+]
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+CSRF_TRUSTED_ORIGINS = [
+    o.strip() for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()
+]
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
 
 # Application definition
@@ -55,6 +72,7 @@ AUTH_USER_MODEL = 'user_acc.Users'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,16 +105,16 @@ WSGI_APPLICATION = 'majorproject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# On Render, DATABASE_URL is provided automatically by the linked Postgres instance.
+# Locally (no DATABASE_URL set) it falls back to the existing local Postgres config below.
+
+import dj_database_url
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'worker_finder',
-        'USER': 'postgres',
-        'PASSWORD': 'omni',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgres://postgres:omni@localhost:5432/worker_finder',
+        conn_max_age=600,
+    )
 }
 
 
@@ -140,6 +158,14 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
 STATIC_ROOT=os.path.join(BASE_DIR,'assets')
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
